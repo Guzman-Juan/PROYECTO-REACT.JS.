@@ -1,4 +1,4 @@
-import NavBar from './Navbar';
+import NavBar from './NavBar';
 import { FaUser, FaShoppingBag, FaUserTie } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
