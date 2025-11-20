@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Tarjeta from './Tarjeta';
-
+import { useProductosContext } from '../context/ProductosContext';
 const Productos = ({ agregarProducto }) => {
 
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-
+    const { productos: productosContext } = useProductosContext();  
     const URL = 'https://691e624bbb52a1db22bdbdc0.mockapi.io/proyecto-001/productos';
 
     useEffect(() => {
