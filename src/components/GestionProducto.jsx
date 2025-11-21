@@ -2,15 +2,22 @@ import { useState, useEffect } from "react";
 import FormProducto from "./FormProducto";
 import { useProductosContext } from "../context/ProductosContext";
 import styles from "./GestionProducto.module.css";
+import { FaPersonCirclePlus } from "react-icons/fa6";
+import { FaTrashAlt } from 'react-icons/fa';
+import { SiNotepadplusplus } from "react-icons/si";
 
 
 const GestionProductos = () => {
   // Cargando contexto de producto
-  const { productos, eliminarProducto } = useProductosContext();
+  const { productos, cargando, error, eliminarProducto } = useProductosContext();
   // Estados 
   const [mostrarForm, setMostrarForm] = useState(false);
   const [modoFormulario, setModoFormulario] = useState("agregar");
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  // IconoS
+  const IconoAgregar =() => <FaPersonCirclePlus size={36}/>;
+  const IconoEliminar = () => <FaTrashAlt className='me-1'/>;
+  const IconoEditar = () => <SiNotepadplusplus size={35}/>;
 
   // Abrir formulario para AGREGAR
   const abrirFormularioAgregar = () => {
@@ -31,6 +38,8 @@ const GestionProductos = () => {
     setMostrarForm(false);
     setProductoSeleccionado(null);
   };
+if (cargando) return <p>Cargando productos...</p>;
+if (error) return <p className="alert alert-danger">Error: {error}</p>; 
 
   return (
     <div className={styles.container}>
@@ -42,7 +51,7 @@ const GestionProductos = () => {
           onClick={abrirFormularioAgregar}
           className={styles.botonAgregar}
         >
-          {/* <CirclePlus /> */}
+          {IconoAgregar()}
           <p>Agregar Producto</p>
         </button>
         </div>
@@ -57,21 +66,21 @@ const GestionProductos = () => {
                   key={producto.id}
                   className={styles.productoItem}
                 >
-                  <img className={styles.imagen} src={producto.imagen} alt={producto.nombre} />
-                  <h3>{producto.nombre}</h3>
-                  <p>Precio: ${producto.precio}</p>
+                  <img className={styles.imagen} src={producto.image} alt={producto.title} />
+                  <h3>{producto.title}</h3>
+                  <p>Precio: ${producto.price}</p>
                   {/* Botones para editar y eliminar este producto */}
                   <button 
                     className={styles.boton} 
                     onClick={() => abrirFormularioEditar(producto)}
                   >
-                   {/* <SquarePen /> */}
+                   {IconoEditar()} 
                   </button>
                   <button 
                     className={styles.boton} 
                     onClick={() => eliminarProducto(producto.id)}
                   >
-                   {/* <TrashIcon /> */}
+                   {IconoEliminar()}
                   </button>
                 </div>
               ))}
