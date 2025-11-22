@@ -1,12 +1,26 @@
 import { useState } from "react";
 import { useProductosContext } from "../context/ProductosContext";
 import styles from "./FormProducto.module.css";
+import { FaWindowClose } from "react-icons/fa"; 
 
 
 const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
-  
+  const IconoCerrar = () => <FaWindowClose size={30} />;
   const [producto, setProducto] = useState(productoInicial);
-  const { agregarProducto, editarProducto } = useProductosContext();
+  const { agregarProducto, editarProducto, categoriasUnicas } = useProductosContext();
+  
+  // Manejar cambios en el campo de categorias(nombres en español)
+  const MAPEO_CATEGORIAS = {
+    "men's clothing": "Ropa de Hombre",
+    "women's clothing": "Ropa de Mujer",
+    "electronics": "Electrónica",
+    "jewelery": "Joyería",
+};
+
+const obtenerNombreCategoria = (categoriaApi) => {
+    return MAPEO_CATEGORIAS[categoriaApi] || 
+           categoriaApi.charAt(0).toUpperCase() + categoriaApi.slice(1);
+};
 
   const manejarChange = (evento) => {
     const { name, value } = evento.target;
@@ -42,12 +56,36 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
               onClick={onCerrar}
               className={styles.closeButton}
             >
-              {/* <X /> */}
+              {IconoCerrar()} 
             </button>
           </div>
           {/* Cuerpo del Modal */}
           <form onSubmit={manejarSubmit}>
             <div className={styles.formGrid}>
+
+             {/* campo categoria */}
+              <div className={styles.colSpan2}>
+                <label className={styles.formLabel}>
+                  Categoría
+                </label>
+                <select
+                  name="category"
+                  id="categoria"
+                  className={styles.formInputBase}
+                  value={producto.category || ""}
+                  onChange={manejarChange}
+                  required
+                >
+                  <option value="" disabled>Seleccione una categoría</option>
+                  {categoriasUnicas.map((categoria) => (
+                    <option key={categoria} value={categoria}>
+                      {obtenerNombreCategoria(categoria)} {/* Convierte a nombre en español */ }
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+
               {/* Campo Nombre */}
               <div className={styles.colSpan2}>
                 <label className={styles.formLabel}>
@@ -55,7 +93,7 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
                 </label>
                 <input
                   type="text"
-                  name="nombre"
+                  name="title"
                   id="nombre"
                   className={styles.formInputBase}
                   placeholder="Ingrese el nombre del producto"
@@ -71,7 +109,7 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
                 </label>
                 <input
                   type="number"
-                  name="precio"
+                  name="price"
                   id="precio"
                   className={styles.formInputBase}
                   placeholder="$0.00"
@@ -90,7 +128,7 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
                 </label>
                 <input
                   type="text"
-                  name="imagen"
+                  name="image"
                   id="imagen"
                   className={styles.formInputBase}
                   placeholder="https://ejemplo.com/imagen.jpg"
@@ -105,7 +143,7 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
                 </label>
                 <textarea
                   id="descripcion"
-                  name="descripcion"
+                  name="description"
                   rows="4"
                   className={styles.formInputBase}
                   placeholder="Escriba la descripción del producto aquí"

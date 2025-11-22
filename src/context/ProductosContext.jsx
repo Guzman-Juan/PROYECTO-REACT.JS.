@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext, useMemo } from 'react';
 
 export const ProductosContext = createContext();
 
@@ -13,6 +13,14 @@ export const ProductosProvider = ({ children }) => {
   useEffect(() => {
     cargarProductos();
   }, []);
+
+  //uso de usememo para cargar categorias unicas
+  const categoriasUnicas = useMemo(() => {
+    if(!productos || productos.length === 0) {
+      return [];
+    }
+    const categorias = [...new Set(productos.map(p => p.category))];
+    return categorias.sort();}, [productos]);
 
   const cargarProductos = async () => {
     try {
@@ -50,7 +58,7 @@ export const ProductosProvider = ({ children }) => {
       console.log("Producto agregado: ", nuevoProducto);
       
       if (!respuesta.ok) 
-        throw new Error(`Error HTTP: ${respuesta.status}`);
+        throw new Error(Error `HTTP: ${respuesta.status}`);
 
       //Agregar el nuevo producto a la lista
       setProductos([...productos, nuevoProducto]);
@@ -122,7 +130,8 @@ export const ProductosProvider = ({ children }) => {
       cargarProductos, 
       agregarProducto, 
       editarProducto, 
-      eliminarProducto 
+      eliminarProducto,
+      categoriasUnicas //exporta la lista de categorias unicas
     }}>
       {children}
     </ProductosContext.Provider>
