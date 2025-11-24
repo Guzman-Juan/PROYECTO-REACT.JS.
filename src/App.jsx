@@ -12,13 +12,15 @@ import Joyas from './Pages/Joyas';
 import Login from './Pages/login';
 import RutaProtegida from './components/RutaProtegida';
 import Admin from './Pages/Admin';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
   return (
     <>
       <Header/>
-      
+       
         <Routes> 
         <Route path='/' element={<Inicio />}/> 
         <Route path='/moda' element={<Moda />}/> 
@@ -31,7 +33,16 @@ function App() {
         <Route path='/admin' element={<RutaProtegida><Admin/></RutaProtegida>}/>
         
       </Routes> 
-      <Footer/>     
+      <Footer/>   
+        <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+
+      />
     </>
   )
 }

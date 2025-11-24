@@ -1,11 +1,13 @@
 import NavBar from './NavBar';
 import { FaUser, FaShoppingBag, FaUserTie } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-
+import {useBusqueda} from '../context/BusquedaContext.jsx'; 
 
 const BagIcon = () => <FaShoppingBag size={24} />;
 const TieIcon = () => <FaUserTie size={28} />; 
 const Header = ({contadorEnCarrito = 5}) => {
+  const { busqueda, setBusqueda } = useBusqueda();
+
   return (
     <header className='d-flex justify-content-around align-items-center p-3 bg-dark text-white'>
       {/* Seccion Izquierda: Logo */}
@@ -15,12 +17,26 @@ const Header = ({contadorEnCarrito = 5}) => {
       {/* Seccion Central: Componente NavBar */}
       <div className='d-none d-md-block'>
         <NavBar/>
+      </div> 
+      {/* Seccion Central-2: Barra de Busqueda */}
+      <div className='flex-grow-1 mx-4'>
+        <input 
+          type="text" 
+          className="form-control" 
+          placeholder="Buscar productos..." 
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          style={{width: "250px"   }}  
+        />
       </div>
+
       {/* Seccion Derecha: Iconos */}
       <div className='d-flex align-items-center gap-4'>
         {/* Icono de Usuario */}
         <div className='me-3'>
+          <Link to="/login" className='text-white text-decoration-none'>
           <TieIcon />
+          </Link> 
         </div>
         {/* Icono de Carrito con Contador */}
         <div className='position-relative'>
