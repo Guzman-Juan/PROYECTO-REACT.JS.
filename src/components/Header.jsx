@@ -1,12 +1,23 @@
 import NavBar from './NavBar';
 import { FaUser, FaShoppingBag, FaUserTie } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {useBusqueda} from '../context/BusquedaContext.jsx'; 
+import { useAuthContext } from '../context/AuthContext.jsx';
+import { GoPasskeyFill } from "react-icons/go";
 
 const BagIcon = () => <FaShoppingBag size={24} />;
 const TieIcon = () => <FaUserTie size={28} />; 
-const Header = ({contadorEnCarrito = 5}) => {
+const AdminIcon = () => <GoPasskeyFill size={30} />;
+const Header = ({contadorEnCarrito = 0}) => {
+
   const { busqueda, setBusqueda } = useBusqueda();
+  const { estaLogiado, logout, usuario } = useAuthContext();
+  const navigate = useNavigate();
+  const EsAdmin = usuario === 'admin';
+  const manejarLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <header className='d-flex justify-content-around align-items-center p-3 bg-dark text-white'>
@@ -33,27 +44,41 @@ const Header = ({contadorEnCarrito = 5}) => {
       {/* Seccion Derecha: Iconos */}
       <div className='d-flex align-items-center gap-4'>
         {/* Icono de Usuario */}
-        <div className='me-3'>
-          <Link to="/login" className='text-white text-decoration-none'>
-          <TieIcon />
-          </Link> 
-        </div>
-        {/* Icono de Carrito con Contador */}
-        <div className='position-relative'>
-          <a href="#seccion-carrito" className='text-white text-decoration-none position-relative'>
-          <BagIcon />
-          {/* Renderiza el contador solo si es mayor que 0 */}
-          {contadorEnCarrito > 0 && (
-            <span className='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>
-              {contadorEnCarrito}
-            </span>
+        <div className='me-5 d-flex align-items-center'>
+          {estaLogiado ? (
+            <>
+            <button
+              onClick={manejarLogout}
+              className='btn btn-outline-light d-flex  align-items-center'>
+              <TieIcon />
+              Cerrar Sesión
+            </button>
+            {EsAdmin ? ( 
+              <Link to="/admin" className='ms-3 text-white text-decoration-none d-flex align-items-center'>
+                <AdminIcon />
+                Admin
+              </Link>
+          ) : (
+            <Link to= "/carrito" className='ms-3 text-white text-decoration-none d-flex align-items-center'>
+            <BagIcon />
+            {contadorEnCarrito > 0 && (
+              <span className='ms-1 badge rounded-pill bg-danger'
+              style={{fontSize: '0.75rem'}}>
+                {contadorEnCarrito}
+              </span>
+            )}
+            </Link>
           )}
-          </a>
-          
+            </>
+          ) : (
+            <Link to="/login" className='text-white text-decoration-none d-flex align-items-center'>
+              <TieIcon />
+              Iniciar Sesión
+            </Link>
+          )}
         </div>
-      </div>
-    </header>   
+       </div>
+       </header>
   );
-};
-
+}; 
 export default Header;
