@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Inicio from './Pages/Inicio';
 import Moda from './Pages/Moda';
 import { Routes, Route } from 'react-router-dom';
-import ProductoDetalle from './pages/ProductoDetalle';
+import ProductoDetalle from './Pages/ProductoDetalle';
 import Footer from './components/Footer';
 import Tecnologia from './Pages/Tecnologia';
 import Contacto from './components/Contacto';
