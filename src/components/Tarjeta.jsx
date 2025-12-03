@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
 
-const Tarjeta = ({ producto, agregarProducto }) => {
+const Tarjeta = ({
+   producto, 
+   onAgregar,
+  agregado
+
+ }) => {
+  const{usuario, estaLogiado} = useAuthContext();
+  const puedeComprar = estaLogiado && usuario !== 'admin';
+
   return (
     // Usa la clase 'card' de Bootstrap
     <div className="card h-100">
@@ -23,13 +32,18 @@ const Tarjeta = ({ producto, agregarProducto }) => {
 
         {/* Botones */}
         <div className="d-grid gap-2">
+
+          {/* Mostrar botón de agregar solo si el usuario puede comprar */}
+          {puedeComprar && (
             <button 
-                className="btn btn-success" 
-                onClick={() => agregarProducto(producto)}
+                onClick={onAgregar}
+                className={ `btn ${agregado ? 'btn-success' : 'btn-primary'}` }
+                disabled={agregado}
             >
-                Agregar al Carrito
+                {agregado ? 'Agregado al Carrito' : 'agregar al Carrito'}    
             </button>
-            <Link 
+          )} 
+            <Link  
                 to={`/productos/${producto.id}`} 
                 className="btn btn-outline-primary"
             >

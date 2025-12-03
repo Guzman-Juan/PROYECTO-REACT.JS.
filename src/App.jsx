@@ -8,33 +8,38 @@ import ProductoDetalle from './pages/ProductoDetalle';
 import Footer from './components/Footer';
 import Tecnologia from './Pages/Tecnologia';
 import Contacto from './components/Contacto';
-import Joyas from './Pages/Joyas'; 
+import Joyas from './Pages/Joyas';
 import Login from './Pages/login';
 import RutaProtegida from './components/RutaProtegida';
 import Admin from './Pages/Admin';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FacturaDeCompra from './Pages/FacturaDeCompra.jsx'
 
 function App() {
 
   return (
     <>
-      <Header/>
-       
-        <Routes> 
-        <Route path='/' element={<Inicio />}/> 
-        <Route path='/moda' element={<Moda />}/> 
-        <Route path='/tecnologia' element={<Tecnologia />}/> 
-        <Route path='/login' element={<Login />}/>  
-        <Route path='/contacto' element={<Contacto />}/>
-        <Route path='/productos/:id' element={<ProductoDetalle />}/>
-        <Route path='/carrito'element={<RutaProtegida><Carrito/></RutaProtegida>}/>
-        <Route path='/joyas' element={<Joyas/>}/> 
-        <Route path='/admin' element={<RutaProtegida><Admin/></RutaProtegida>}/>
-        
-      </Routes> 
-      <Footer/>   
-        <ToastContainer
+      <div style={{ paddingTop: "80px" }}>
+        <Header />
+      </div>
+
+
+      <Routes>
+        <Route path='/' element={<Inicio />} />
+        <Route path='/moda' element={<Moda />} />
+        <Route path='/tecnologia' element={<Tecnologia />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/contacto' element={<Contacto />} />
+        <Route path='/productos/:id' element={<ProductoDetalle />} />
+        <Route path='/carrito' element={<RutaProtegida><Carrito /></RutaProtegida>} />
+        <Route path='/joyas' element={<Joyas />} />
+        <Route path='/admin' element={<RutaProtegida><Admin /></RutaProtegida>} />
+        <Route path='/factura' element={<RutaProtegida><FacturaDeCompra /></RutaProtegida>} />
+
+      </Routes>
+      <Footer />
+      <ToastContainer
         position="top-center"
         autoClose={3000}
         pauseOnFocusLoss

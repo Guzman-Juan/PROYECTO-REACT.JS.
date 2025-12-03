@@ -5,6 +5,7 @@ import { FaWindowClose } from "react-icons/fa";
 
 
 const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
+  const DEFAULT_IMAGEN = "https://i.pinimg.com/736x/f1/05/65/f10565212478728cb4b4ef19fd7ec0a9.jpg";
   const IconoCerrar = () => <FaWindowClose size={30} />;
   const [producto, setProducto] = useState(productoInicial);
   const { agregarProducto, editarProducto, categoriasUnicas } = useProductosContext();
@@ -63,6 +64,7 @@ const obtenerNombreCategoria = (categoriaApi) => {
     if (validarFormulario()) {
       const productoConPrecio = {
       ...producto,
+      image: !producto.image || producto.image.trim() === "" ? DEFAULT_IMAGEN : producto.image,  
       price: Number(producto.price),
     };
     if (modo === "agregar") {

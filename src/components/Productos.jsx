@@ -2,14 +2,15 @@
 import { useBusqueda } from '../context/BusquedaContext';
 import Tarjeta from './Tarjeta';
 import { useProductosContext } from '../context/ProductosContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CarritoContext } from '../context/CarritoContex';
 
-const Productos = ({ agregarProducto }) => {
+const Productos = () => {
     const { productos, cargando, error } = useProductosContext();
      const { busqueda } = useBusqueda();
-
-    if (cargando) return '...Cargando productos...';
-    if (error) return error;
+     const { agregarAlCarrito } = useContext(CarritoContext);
+     const [cantidad] = useState(1);
+     const [agregarId, setAgregarId] = useState(null);
 
     // Filtrar productos según la búsqueda//
     const productosFiltrados = productos.filter((producto) =>
@@ -19,11 +20,26 @@ const Productos = ({ agregarProducto }) => {
      //paginador
      const productosPorPagina = 8;
      const [paginaActual, setPaginaActual] = useState(1);
-     
+
      //Reseteamos la página actual si los productos filtrados cambian
         useEffect(() => {
             setPaginaActual(1);
         }, [busqueda]);
+
+        //handler de interaccion
+        const handleAgregarAlCarrito = (producto) => {
+            for (let i = 0; i < cantidad; i++) {
+                agregarAlCarrito(producto);
+            }   
+            setAgregarId(producto.id);
+            setTimeout(() => 
+                setAgregarId(null), 2000);
+        };
+        
+        // Manejo de estados de carga y error
+           if (cargando) return '...Cargando productos...';
+    if (error) return error;
+
         const indiceUltimoProducto = paginaActual * productosPorPagina;
         const indicePrimerProducto = indiceUltimoProducto - productosPorPagina;
         const productosPaginados = productosFiltrados.slice(indicePrimerProducto, indiceUltimoProducto);
@@ -51,7 +67,9 @@ const Productos = ({ agregarProducto }) => {
 
                         <Tarjeta
                             producto={producto}
-                            agregarProducto={agregarProducto}
+                            
+                            agregado= {agregarId === producto.id}
+                            onAgregar={() => handleAgregarAlCarrito(producto)}
                         />
                     </div>
                 ))}

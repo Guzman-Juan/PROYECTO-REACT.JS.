@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
 
-const TarjetaDetalle = ({producto}) => {
+const TarjetaDetalle = ({
+  producto,
+  agregado,
+  onAgregar,
+  onVerCarrito,
+  mostrarVerCarrito = true,
+
+      }) => {
+         const{usuario, estaLogiado} = useAuthContext();
+  const puedeComprar = estaLogiado && usuario !== 'admin';
+
   return (
     // Usa la clase 'card' de Bootstrap
     <div className="card h-100">
@@ -22,8 +33,33 @@ const TarjetaDetalle = ({producto}) => {
         <p className="card-text  mt-auto">${producto.description}</p> 
         {/* mt-auto para empujar el precio al fondo, y fw-bold para destacarlo */}
 
+        {/* Categoria*/}
+        {producto.category && (
+          <span className="badge bg-secondary mb-3">{producto.category}</span>
+        )}
+
+        {/* Botones de Compra */}
+        {puedeComprar && (
+        <div className=" d-grid gap-2 mt-auto">
+          <button
+          onClick={onAgregar}
+          className={ `btn ${agregado ? 'btn-success' : 'btn-primary'} btn-lg`}
+          disabled={agregado}
+          >
+            {agregado ? 'Agregado al Carrito' : 'Agregar al Carrito'}
+          </button>
+          {mostrarVerCarrito && (
+            <button
+              onClick={onVerCarrito}
+              className="btn btn-outline-success btn-lg"
+            >
+              Ver Carrito
+            </button>
+          )} 
+        </div>
+        )} 
       </div>
-    </div>
+    </div> 
   );
 };
 
