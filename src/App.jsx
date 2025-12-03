@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import Tecnologia from './Pages/Tecnologia';
 import Contacto from './components/Contacto';
 import Joyas from './Pages/Joyas';
-import Login from './Pages/login';
+import Login from './Pages/Login';
 import RutaProtegida from './components/RutaProtegida';
 import Admin from './Pages/Admin';
 import { ToastContainer } from "react-toastify";
